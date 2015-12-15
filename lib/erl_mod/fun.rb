@@ -21,8 +21,8 @@ module ErlMod
       true
     end
 
-    def returns(contract)
-      @return_contract = contract
+    def returns(contract, extension = nil)
+      @return_contract = {contract: contract, extension: extension}
     end
 
     private
@@ -36,7 +36,13 @@ module ErlMod
 
     def check_return_contract!(value)
       return value unless @return_contract
-      raise ReturnContractViolation unless @return_contract === value
+
+      raise ReturnContractViolation unless @return_contract[:contract] === value
+
+      if @return_contract[:extension]
+        raise ReturnContractViolation unless @return_contract[:extension].call(value)
+      end
+
       value
     end
   end

@@ -89,15 +89,31 @@ describe ErlMod do
         fun :with_contract, [Object] do |param|
           param
         end.returns(Integer)
+
+        fun :with_precise_contract, [Object] do |param|
+          param
+        end.returns(Fixnum, ->(a) { a > 10 })
       end
     end
 
-    it 'passes' do
-      expect(@mod.with_contract(1)).to eq(1)
+    context 'with simple contract' do
+      it 'passes' do
+        expect(@mod.with_contract(1)).to eq(1)
+      end
+
+      it 'raises exception' do
+        expect{@mod.with_contract("1")}.to raise_error(ErlMod::ReturnContractViolation)
+      end
     end
 
-    it 'raises exception' do
-      expect{@mod.with_contract("1")}.to raise_error(ErlMod::ReturnContractViolation)
+    context 'with complex contract' do
+      it 'passes' do
+        expect(@mod.with_precise_contract(11)).to eq(11)
+      end
+
+      it 'raises exception' do
+        expect{@mod.with_precise_contract(8)}.to raise_error(ErlMod::ReturnContractViolation)
+      end
     end
   end
 end
