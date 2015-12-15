@@ -132,4 +132,24 @@ describe ErlMod do
       expect(@mod.fib(8)).to eq(21)
     end
   end
+
+  context 'any method' do
+    before(:all) do
+      @mod = ErlMod.define do
+        fun :id, [any] { |x| x }
+      end
+    end
+
+    it 'string' do
+      expect(@mod.id("aaa")).to eq("aaa")
+    end
+
+    it 'integer' do
+      expect(@mod.id(2137)).to eq(2137)
+    end
+
+    it 'array' do
+      expect(@mod.id([1,2,3])).to eq([1,2,3])
+    end
+  end
 end

@@ -27,5 +27,9 @@ module ErlMod
     def find_best_method(name, args)
       @funs[name].detect { |f| f.matches?(args) }
     end
+
+    def any
+      BasicObject
+    end
   end
 end

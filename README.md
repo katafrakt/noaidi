@@ -27,7 +27,13 @@ Argument contracts are realized using `===` operator (just like with `case` stat
 
 * Classes – to indicate that the argument has to be an instance of this class or its subclass
 * Values – so that the argument has to be exactly the same
-* Ranges – to have the argument included in the boundaties of a range
+* Ranges – to have the argument included in the boundaries of a range
+
+You can use `any` keyword if you don't want to specify constraint on the argument:
+
+```ruby
+fun :whatever, [any, Integer] { |a, i| a.to_s * i }
+```
 
 ### Return value contracts
 
@@ -64,6 +70,15 @@ contracted.id_for_small_numbers(12)
 ### Immutability
 
 It's not easy to enforce immutability in language like Ruby and I won't try too hard to do it. However, `fun`s are frozen, which means that you can change it after it has been defined. It also means that **you can't use instance variables** in `fun`s (that's intentional, as using them could possibly yield unexpected results). Of course, I bet there are some trick with which you can overcome this, but having to use them should discourage you enough.
+
+### Default arguments
+
+Default arguments for `fun`s are not supported and won't be supported. This is by design. If you want to have default arguments, use constructs known in other languages, i.e.
+
+```ruby
+fun :mult, [Integer, Integer] {|x,y| x*y }
+fun :mult, [Integer] {|x| mult(x, 1) }
+```
 
 ## Testing
 
