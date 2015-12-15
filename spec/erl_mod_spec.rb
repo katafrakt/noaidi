@@ -116,4 +116,20 @@ describe ErlMod do
       end
     end
   end
+
+  context 'calling methods from same module' do
+    before(:all) do
+      @mod = ErlMod.define do
+        fun :fib, [0] { 0 }
+        fun :fib, [1] { 1 }
+        fun :fib, [Integer] do |n|
+          fib(n - 1) + fib(n - 2)
+        end
+      end
+    end
+
+    it 'allows to call' do
+      expect(@mod.fib(8)).to eq(21)
+    end
+  end
 end
