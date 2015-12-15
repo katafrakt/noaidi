@@ -72,4 +72,14 @@ describe ErlMod do
       end
     end
   end
+
+  it 'disallows using instance variables' do
+    mod = ErlMod.define do
+      fun :with_ivar do
+        @state = 'initial'
+      end
+    end
+
+    expect{mod.with_ivar}.to raise_error(RuntimeError)
+  end
 end

@@ -4,10 +4,11 @@ module ErlMod
       @name = name
       @args = args
       @block = block
+      freeze
     end
 
     def call(*args)
-      @block.call(*args)
+      instance_exec(*args, &@block)
     end
 
     def arity
