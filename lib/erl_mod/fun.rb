@@ -1,18 +1,16 @@
 module ErlMod
+  ReturnContractViolation = Class.new(StandardError)
+
   class Fun
     def initialize(name, args, block)
       @name = name
       @args = args
       @block = block
-      freeze
     end
 
     def call(*args)
-      instance_exec(*args, &@block)
-    end
-
-    def arity
-      @args.length
+      freeze unless frozen?
+      check_return_contract!(instance_exec(*args, &@block))
     end
 
     def matches?(args)
@@ -23,6 +21,23 @@ module ErlMod
       true
     end
 
+    def returns(contract)
+      @return_contract = contract
+    end
+
     private
+    def arity
+      @args.length
+    end
+
+    def arguments
+      @args
+    end
+
+    def check_return_contract!(value)
+      return value unless @return_contract
+      raise ReturnContractViolation unless @return_contract === value
+      value
+    end
   end
 end

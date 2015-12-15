@@ -9,8 +9,10 @@ module ErlMod
     def fun(name, args=[], &block)
       raise NoBlockGiven unless block_given?
       name = name.to_sym
+      f = Fun.new(name, args, block)
       @funs[name] ||= []
-      @funs[name] << Fun.new(name, args, block)
+      @funs[name] << f
+      f
     end
 
     def inspect_funs

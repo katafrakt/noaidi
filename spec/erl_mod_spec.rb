@@ -18,7 +18,7 @@ describe ErlMod do
   end
 
   context 'chooses the best method' do
-    before do
+    before(:all) do
       @mod = ErlMod.define do
         fun :test_value, [2] { 22 }
         fun :test_value, [1] { 11 }
@@ -81,5 +81,23 @@ describe ErlMod do
     end
 
     expect{mod.with_ivar}.to raise_error(RuntimeError)
+  end
+
+  context 'return contract' do
+    before(:all) do
+      @mod = ErlMod.define do
+        fun :with_contract, [Object] do |param|
+          param
+        end.returns(Integer)
+      end
+    end
+
+    it 'passes' do
+      expect(@mod.with_contract(1)).to eq(1)
+    end
+
+    it 'raises exception' do
+      expect{@mod.with_contract("1")}.to raise_error(ErlMod::ReturnContractViolation)
+    end
   end
 end
