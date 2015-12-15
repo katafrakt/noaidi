@@ -2,7 +2,8 @@ module ErlMod
   ReturnContractViolation = Class.new(StandardError)
 
   class Fun
-    def initialize(name, args, block)
+    def initialize(erl_mod, name, args, block)
+      @module = erl_mod
       @name = name
       @args = args
       @block = block
@@ -23,6 +24,10 @@ module ErlMod
 
     def returns(contract, extension = nil)
       @return_contract = {contract: contract, extension: extension}
+    end
+
+    def method_missing(name, *args)
+      @module.public_send(name, *args)
     end
 
     private

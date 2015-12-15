@@ -9,7 +9,7 @@ module ErlMod
     def fun(name, args=[], &block)
       raise NoBlockGiven unless block_given?
       name = name.to_sym
-      f = Fun.new(name, args, block)
+      f = Fun.new(self, name, args, block)
       @funs[name] ||= []
       @funs[name] << f
       f
