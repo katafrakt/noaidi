@@ -10,6 +10,18 @@ module ErlMod
       @block.call(*args)
     end
 
+    def arity
+      @args.length
+    end
+
+    def matches?(args)
+      return false unless arity == args.length
+      args.each_with_index do |arg, i|
+        return false unless @args[i] === arg
+      end
+      true
+    end
+
     private
   end
 end
