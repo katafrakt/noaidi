@@ -1,11 +1,19 @@
 require 'spec_helper'
 
 describe ErlMod do
-  it 'has a version number' do
-    expect(ErlMod::VERSION).not_to be nil
+  it 'returns correct value' do
+    MyModule = ErlMod.define do
+      fun :test do
+        42
+      end
+    end
+    expect(MyModule.test).to eq(42)
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  it 'raises with no block given' do
+    expect{
+      ErlMod.define do
+        fun :test, [Integer]
+      end}.to raise_error(ErlMod::NoBlockGiven)
   end
 end
