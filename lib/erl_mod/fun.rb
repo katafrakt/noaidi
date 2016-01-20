@@ -5,7 +5,7 @@ module ErlMod
     def initialize(erl_mod, name, args, block)
       @module = erl_mod
       @name = name
-      @args = args
+      @args = args.map{|a| Matcher.new(a)}
       @block = block
     end
 
@@ -17,13 +17,13 @@ module ErlMod
     def matches?(args)
       return false unless arity == args.length
       args.each_with_index do |arg, i|
-        return false unless @args[i] === arg
+        return false unless @args[i].match?(arg)
       end
       true
     end
 
     def returns(contract, extension = nil)
-      @return_contract = {contract: contract, extension: extension}
+      @return_contract = {contract: Matcher.new(contract), extension: extension}
     end
 
     def method_missing(name, *args)
@@ -42,7 +42,7 @@ module ErlMod
     def check_return_contract!(value)
       return value unless @return_contract
 
-      raise ReturnContractViolation unless @return_contract[:contract] === value
+      raise ReturnContractViolation unless @return_contract[:contract].match?(value)
 
       if @return_contract[:extension]
         raise ReturnContractViolation unless @return_contract[:extension].call(value)
