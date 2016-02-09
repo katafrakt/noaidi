@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'erl_mod/version'
+require 'noaidi/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "erl_mod"
-  spec.version       = ErlMod::VERSION
+  spec.name          = "noaidi"
+  spec.version       = Noaidi::VERSION
   spec.authors       = ["Paweł Świątkowski"]
   spec.email         = ["inquebrantable@gmail.com"]
 

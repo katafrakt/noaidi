@@ -1,4 +1,4 @@
-module ErlMod
+module Noaidi
   NoBlockGiven = Class.new(StandardError)
 
   class Module

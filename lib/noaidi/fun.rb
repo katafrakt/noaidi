@@ -1,9 +1,9 @@
-module ErlMod
+module Noaidi
   ReturnContractViolation = Class.new(StandardError)
 
   class Fun
-    def initialize(erl_mod, name, args, block)
-      @module = erl_mod
+    def initialize(noaidi, name, args, block)
+      @module = noaidi
       @name = name
       @args = args.map{|a| Matcher.new(a)}
       @block = block

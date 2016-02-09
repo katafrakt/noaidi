@@ -1,15 +1,15 @@
-# ErlMod
+# Noaidi
 
 This is a proof-of-concept gem for creating focused, erlang-inspired modules, with pattern matching and (optional) return value contracts. Note that if you want more sophisticated solution, you might have a look at [contracts.ruby](https://github.com/egonSchiele/contracts.ruby) gem.
 
 ## Usage
 
-A classical example of using pattern amtchi is a naive recursive Fibonacci implementation. Here's how it looks with `erl_mod`:
+A classical example of using pattern amtchi is a naive recursive Fibonacci implementation. Here's how it looks with `noaidi`:
 
 ```ruby
-require 'erl_mod'
+require 'noaidi'
 
-naive = ErlMod.define do
+naive = Noaidi.define do
   fun :fib, [0] { 0 }
   fun :fib, [1] { 1 }
   fun :fib, [Integer] do |n|
@@ -21,7 +21,7 @@ puts naive.fib(5)
 puts naive.fib(15)
 ```
 
-As you see, the core concept is a `fun`. You create is using DSL inside a block passed to `ErlMod.define`. First parameter is a fun name, second is array of argument contracts. It is followed by a block. Of course, you can reference `fun`s from the same module in other funs.
+As you see, the core concept is a `fun`. You create is using DSL inside a block passed to `Noaidi.define`. First parameter is a fun name, second is array of argument contracts. It is followed by a block. Of course, you can reference `fun`s from the same module in other funs.
 
 Argument contracts are realized using `===` operator (just like with `case` statements) for now. This might be extended to support more expressive cases, but works for now. It means that you can use, for example:
 
@@ -40,7 +40,7 @@ fun :whatever, [any, Integer] { |a, i| a.to_s * i }
 Optionally you can defina a contract for return value. This means that you may be safely reason (to some extent) about the value which is returned by `fun`. To do that, follow the `fun` declaration with `.returns` method:
 
 ```ruby
-contracted = ErlMod.define do
+contracted = Noaidi.define do
   fun :id_for_numbers, [Object] do |x|
     x
   end.returns(Integer)
@@ -49,13 +49,13 @@ end
 contracted.id_for_numbers(1)
 #=> 1
 contracted.id_for_numbers("lorem ipsum")
-#=> raises ErlMod::ReturnContractViolation
+#=> raises Noaidi::ReturnContractViolation
 ```
 
 If you want even more specific cases, you might extend return contract with a lambda:
 
 ```ruby
-contracted = ErlMod.define do
+contracted = Noaidi.define do
   fun :id_for_small_numbers, [Object] do |x|
     x
   end.returns(Integer, ->(x) { x < 10 })
@@ -64,7 +64,7 @@ end
 contracted.id_for_small_numbers(1)
 #=> 1
 contracted.id_for_small_numbers(12)
-#=> raises ErlMod::ReturnContractViolation
+#=> raises Noaidi::ReturnContractViolation
 ```
 
 ### Immutability
@@ -86,7 +86,7 @@ Run `rake spec`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/katafrakt/erl_mod.
+Bug reports and pull requests are welcome on GitHub at https://github.com/katafrakt/noaidi.
 
 ## License
 

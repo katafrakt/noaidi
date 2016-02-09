@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe ErlMod do
+describe Noaidi do
   it 'returns correct value' do
-    MyModule = ErlMod.define do
+    MyModule = Noaidi.define do
       fun :test do
         42
       end
@@ -12,14 +12,14 @@ describe ErlMod do
 
   it 'raises with no block given' do
     expect{
-      ErlMod.define do
+      Noaidi.define do
         fun :test, [Integer]
-      end}.to raise_error(ErlMod::NoBlockGiven)
+      end}.to raise_error(Noaidi::NoBlockGiven)
   end
 
   context 'chooses the best method' do
     before(:all) do
-      @mod = ErlMod.define do
+      @mod = Noaidi.define do
         fun :test_value, [2] { 22 }
         fun :test_value, [1] { 11 }
         fun :test_class, [Integer] { 1 }
@@ -74,7 +74,7 @@ describe ErlMod do
   end
 
   it 'disallows using instance variables' do
-    mod = ErlMod.define do
+    mod = Noaidi.define do
       fun :with_ivar do
         @state = 'initial'
       end
@@ -85,7 +85,7 @@ describe ErlMod do
 
   context 'return contract' do
     before(:all) do
-      @mod = ErlMod.define do
+      @mod = Noaidi.define do
         fun :with_contract, [Object] do |param|
           param
         end.returns(Integer)
@@ -102,7 +102,7 @@ describe ErlMod do
       end
 
       it 'raises exception' do
-        expect{@mod.with_contract("1")}.to raise_error(ErlMod::ReturnContractViolation)
+        expect{@mod.with_contract("1")}.to raise_error(Noaidi::ReturnContractViolation)
       end
     end
 
@@ -112,14 +112,14 @@ describe ErlMod do
       end
 
       it 'raises exception' do
-        expect{@mod.with_precise_contract(8)}.to raise_error(ErlMod::ReturnContractViolation)
+        expect{@mod.with_precise_contract(8)}.to raise_error(Noaidi::ReturnContractViolation)
       end
     end
   end
 
   context 'calling methods from same module' do
     before(:all) do
-      @mod = ErlMod.define do
+      @mod = Noaidi.define do
         fun :fib, [0] { 0 }
         fun :fib, [1] { 1 }
         fun :fib, [Integer] do |n|
@@ -135,7 +135,7 @@ describe ErlMod do
 
   context 'any method' do
     before(:all) do
-      @mod = ErlMod.define do
+      @mod = Noaidi.define do
         fun :id, [any] { |x| x }
       end
     end

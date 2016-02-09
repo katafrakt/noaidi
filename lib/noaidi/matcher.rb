@@ -1,4 +1,4 @@
-module ErlMod
+module Noaidi
   class Matcher
     def initialize(pattern)
       @pattern = pattern
