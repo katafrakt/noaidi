@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Noaidi do
   it 'returns correct value' do
-    MyModule = Noaidi.define do
+    MyModule = Noaidi.module do
       fun :test do
         42
       end
@@ -12,14 +12,14 @@ describe Noaidi do
 
   it 'raises with no block given' do
     expect{
-      Noaidi.define do
+      Noaidi.module do
         fun :test, [Integer]
       end}.to raise_error(Noaidi::NoBlockGiven)
   end
 
   context 'chooses the best method' do
     before(:all) do
-      @mod = Noaidi.define do
+      @mod = Noaidi.module do
         fun :test_value, [2] { 22 }
         fun :test_value, [1] { 11 }
         fun :test_class, [Integer] { 1 }
@@ -74,7 +74,7 @@ describe Noaidi do
   end
 
   it 'disallows using instance variables' do
-    mod = Noaidi.define do
+    mod = Noaidi.module do
       fun :with_ivar do
         @state = 'initial'
       end
@@ -85,7 +85,7 @@ describe Noaidi do
 
   context 'return contract' do
     before(:all) do
-      @mod = Noaidi.define do
+      @mod = Noaidi.module do
         fun :with_contract, [Object] do |param|
           param
         end.returns(Integer)
@@ -119,7 +119,7 @@ describe Noaidi do
 
   context 'calling methods from same module' do
     before(:all) do
-      @mod = Noaidi.define do
+      @mod = Noaidi.module do
         fun :fib, [0] { 0 }
         fun :fib, [1] { 1 }
         fun :fib, [Integer] do |n|
@@ -135,7 +135,7 @@ describe Noaidi do
 
   context 'any method' do
     before(:all) do
-      @mod = Noaidi.define do
+      @mod = Noaidi.module do
         fun :id, [any] { |x| x }
       end
     end
