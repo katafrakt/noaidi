@@ -2,6 +2,8 @@ module Noaidi
   NoBlockGiven = Class.new(StandardError)
 
   class Module
+    include Noaidi::DSL
+    
     def initialize
       @funs = {}
     end
@@ -26,10 +28,6 @@ module Noaidi
     private
     def find_best_method(name, args)
       @funs[name].detect { |f| f.matches?(args) }
-    end
-
-    def any
-      BasicObject
     end
   end
 end
