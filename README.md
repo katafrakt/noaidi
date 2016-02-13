@@ -2,9 +2,17 @@
 
 This is a proof-of-concept gem for creating focused, erlang-inspired modules, with pattern matching and (optional) return value contracts. Note that if you want more sophisticated solution, you might have a look at [contracts.ruby](https://github.com/egonSchiele/contracts.ruby) gem.
 
+Noaidi is a Sami name for a shaman. According to Wikipedia:
+
+> A noaidi was a mediator between the human world and _saivo_, the underworld, for the least of community problems.
+
+So, this Noaidi is a mediator between the functional world and Ruby world (which of those is _saivo_, I leave it to you).
+
+Also, [the blog post](http://katafrakt.me/2016/02/13/quest-for-pattern-matching-in-ruby/).
+
 ## Usage
 
-A classical example of using pattern amtchi is a naive recursive Fibonacci implementation. Here's how it looks with `noaidi`:
+A classical example of using pattern matching is a naive recursive Fibonacci implementation. Here's how it looks with `noaidi`:
 
 ```ruby
 require 'noaidi'
