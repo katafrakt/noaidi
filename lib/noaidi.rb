@@ -4,6 +4,7 @@ require "noaidi/module"
 require "noaidi/fun"
 require "noaidi/matcher"
 require "noaidi/matchmaker"
+require "noaidi/idioms/match"
 
 module Noaidi
   def self.module(&block)

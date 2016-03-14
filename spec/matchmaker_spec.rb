@@ -3,9 +3,10 @@ require 'spec_helper'
 
 describe Noaidi::Matchmaker do
   include Noaidi::DSL
+  include Noaidi::Idioms::Match
 
   it 'returns 2' do
-    re = Noaidi.match 1, {
+    re = match 1, {
       Integer => ->(i) { i + 1 },
       [Array, BasicObject] => ->(i,j) { "nope" }
     }
@@ -13,7 +14,7 @@ describe Noaidi::Matchmaker do
   end
 
   it 'returns string' do
-    re = Noaidi.match [:error, 2], {
+    re = match [:error, 2], {
       Integer => proc { 1 },
       [:error, Integer] => ->(i) { "nope #{i}" }
     }
