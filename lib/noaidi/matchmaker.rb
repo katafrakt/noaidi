@@ -4,6 +4,8 @@ module Noaidi
   end
 
   class Matchmaker
+    NoMatchError = Class.new(StandardError)
+
     def initialize(value, branches)
       @values = Array(value)
       @branches = process_branches(branches)
@@ -13,7 +15,7 @@ module Noaidi
       @branches.each do |matchers, lbd|
         return lbd.call(*meaningful_values(matchers)) if matches?(matchers)
       end
-      raise 'No match'
+      raise NoMatchError, "No match for #{@values.inspect}"
     end
 
     private
