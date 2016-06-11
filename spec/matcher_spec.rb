@@ -39,4 +39,32 @@ RSpec.describe Noaidi::Matcher do
     expect(matcher.match?('2')).to eq(false)
     expect(matcher.match?(2..6)).to eq(false)
   end
+
+  it 'matches by flat Hash' do
+    matcher = Matcher.new(a: 123, b: :symbol)
+
+    expect(matcher.match?(a: 123, b: :symbol)).to eq(true)
+    expect(matcher.match?(a: 123, b: :symbol, c: 442)).to eq(true)
+
+    expect(matcher.match?(a: 125, b: :symbol)).to eq(false)
+    expect(matcher.match?(a: 125)).to eq(false)
+    expect(matcher.match?(b: :symbol)).to eq(false)
+    expect(matcher.match?({})).to eq(false)
+
+    expect(matcher.match?(123)).to eq(false)
+  end
+
+  it 'matches by nested Hash' do
+    matcher = Matcher.new(a: Integer, b: {c: :ok, b: String})
+
+    expect(matcher.match?(a: 12, b: {c: :ok, b: 'aaa'})).to eq(true)
+    expect(matcher.match?(a: 12, b: {c: :ok, b: 'aaa', d: 78})).to eq(true)
+    expect(matcher.match?(a: 12, test: false, b: {c: :ok, b: 'aaa', d: 78})).to eq(true)
+
+    expect(matcher.match?(a: 12, b: {})).to eq(false)
+    expect(matcher.match?(a: 12, b: {c: :ok})).to eq(false)
+    expect(matcher.match?(a: 12, b: {c: :nok, b: 'abc'})).to eq(false)
+    expect(matcher.match?(a: 12, b: {c: :ok, b: 123})).to eq(false)
+    expect(matcher.match?(a: 'test', b: {c: :ok, b: 123})).to eq(false)
+  end
 end
