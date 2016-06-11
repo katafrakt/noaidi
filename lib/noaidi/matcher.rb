@@ -29,5 +29,13 @@ module Noaidi
         Matcher.new(val).match?(value[key])
       end.all?{ |x| x == true }
     end
+
+    def match_with_lambda(value)
+      begin
+        @pattern.call(value)
+      rescue ArgumentError
+        false
+      end
+    end
   end
 end

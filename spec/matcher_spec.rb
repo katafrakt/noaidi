@@ -67,4 +67,16 @@ RSpec.describe Noaidi::Matcher do
     expect(matcher.match?(a: 12, b: {c: :ok, b: 123})).to eq(false)
     expect(matcher.match?(a: 'test', b: {c: :ok, b: 123})).to eq(false)
   end
+
+  it 'respect guard (matches by lambda)' do
+    matcher = Matcher.new(->(val) { val < 10 })
+
+    expect(matcher.match?(1)).to eq(true)
+    expect(matcher.match?(9.9)).to eq(true)
+
+    expect(matcher.match?(10)).to eq(false)
+    expect(matcher.match?(100)).to eq(false)
+
+    expect(matcher.match?("123")).to eq(false)
+  end
 end
