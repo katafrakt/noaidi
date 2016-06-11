@@ -83,40 +83,6 @@ describe Noaidi do
     expect{mod.with_ivar}.to raise_error(RuntimeError)
   end
 
-  context 'return contract' do
-    before(:all) do
-      @mod = Noaidi.module do
-        fun :with_contract, [Object] do |param|
-          param
-        end.returns(Integer)
-
-        fun :with_precise_contract, [Object] do |param|
-          param
-        end.returns(Fixnum, ->(a) { a > 10 })
-      end
-    end
-
-    context 'with simple contract' do
-      it 'passes' do
-        expect(@mod.with_contract(1)).to eq(1)
-      end
-
-      it 'raises exception' do
-        expect{@mod.with_contract("1")}.to raise_error(Noaidi::ReturnContractViolation)
-      end
-    end
-
-    context 'with complex contract' do
-      it 'passes' do
-        expect(@mod.with_precise_contract(11)).to eq(11)
-      end
-
-      it 'raises exception' do
-        expect{@mod.with_precise_contract(8)}.to raise_error(Noaidi::ReturnContractViolation)
-      end
-    end
-  end
-
   context 'calling methods from same module' do
     before(:all) do
       @mod = Noaidi.module do
