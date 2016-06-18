@@ -106,6 +106,14 @@ end
 
 If you care for performance, treat this pattern matching as RegEx, where initialization is a most expensive part. With that in mind, you can "compile" the match beforehand and only call subsequent values on compiled version. Use `Noaidi.compile_match` just like with an example above. The returned value will be a compiled matcher.
 
+```ruby
+matcher = Noaidi.compile_match do |m|
+  ...
+end
+
+matcher.(value)
+```
+
 The benchmark comparing those two approaches on my laptop gives following results:
 
 ```
