@@ -43,7 +43,7 @@ You can leverage pattern matching in Noaidi with some choices. That basic match 
 
 There are also some special patterns, that are handled differently:
 
-**Hashes**: You can pass `{ status: :ok }` as a pattern at it will match all hashes that include value `100` under `:status` key. It does not matter what the rest of the keys are. As a values you can also use other pattern, i.e. `{ response: 500..599, headers: { language: 'fi' } }` will match all hashes with response between 500 and 599 and also having a `:headers` key, containing a hash having `'fi'` under `:language` key.
+**Hashes**: You can pass `{ status: :ok }` as a pattern and it will match all hashes that include value `:ok` under `:status` key. It does not matter what the rest of the keys are. As a values you can also use other pattern, i.e. `{ response: 500..599, headers: { language: 'fi' } }` will match all hashes with response between 500 and 599 and also having a `:headers` key, containing a hash having `'fi'` under `:language` key.
 
 **Lambdas** provide basic guard possibilities. If the lambda evaluates to `true`, it is a match. For example:
 
