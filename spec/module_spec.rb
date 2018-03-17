@@ -20,13 +20,13 @@ describe Noaidi do
   context 'chooses the best method' do
     before(:all) do
       @mod = Noaidi.module do
-        fun(:test_value, [2]) { 22 }
-        fun(:test_value, [1]) { 11 }
-        fun(:test_class, [Integer]) { 1 }
-        fun(:test_class, [String]) { "1" }
-        fun(:test_range, [(1..4)]) { "small" }
-        fun(:test_range, [(4..10)]) { "medium" }
-        fun(:test_range, [Numeric]) { "big" }
+        fun(:test_value, 2) { 22 }
+        fun(:test_value, 1) { 11 }
+        fun(:test_class, Integer) { 1 }
+        fun(:test_class, String) { "1" }
+        fun(:test_range, (1..4)) { "small" }
+        fun(:test_range, (4..10)) { "medium" }
+        fun(:test_range, Numeric) { "big" }
       end
     end
 
@@ -86,9 +86,9 @@ describe Noaidi do
   context 'calling methods from same module' do
     before(:all) do
       @mod = Noaidi.module do
-        fun(:fib, [0]) { 0 }
-        fun(:fib, [1]) { 1 }
-        fun(:fib, [Integer]) do |n|
+        fun(:fib, 0) { 0 }
+        fun(:fib, 1) { 1 }
+        fun(:fib, Integer) do |n|
           fib(n - 1) + fib(n - 2)
         end
       end
@@ -102,7 +102,7 @@ describe Noaidi do
   context 'any method' do
     before(:all) do
       @mod = Noaidi.module do
-        fun(:id, [any]) { |x| x }
+        fun(:id, any) { |x| x }
       end
     end
 

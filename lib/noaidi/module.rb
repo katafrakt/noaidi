@@ -3,14 +3,14 @@ module Noaidi
 
   class Module
     include Noaidi::DSL
-    
+
     def initialize
       @funs = {}
     end
 
-    def fun(name, args=[], &block)
+    def fun(*args, &block)
       raise NoBlockGiven unless block_given?
-      name = name.to_sym
+      name = args.shift.to_sym
       f = Fun.new(self, name, args, block)
       @funs[name] ||= []
       @funs[name] << f
