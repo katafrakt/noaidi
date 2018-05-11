@@ -77,6 +77,6 @@ RSpec.describe Noaidi::Matcher do
     expect(matcher.match?(10)).to eq(false)
     expect(matcher.match?(100)).to eq(false)
 
-    expect(matcher.match?("123")).to eq(false)
+    expect(matcher.match?('123')).to eq(false)
   end
 end

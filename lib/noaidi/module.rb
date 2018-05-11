@@ -11,22 +11,34 @@ module Noaidi
     def fun(*args, &block)
       raise NoBlockGiven unless block_given?
       name = args.shift.to_sym
-      f = Fun.new(self, name, args, block)
-      @funs[name] ||= []
-      @funs[name] << f
-      f
+      fun = Fun.new(self, name, args, block)
+
+      unless @funs.key?(name)
+        define_fun_method(name)
+        @funs[name] ||= []
+      end
+
+      @funs[name] << fun
+      fun
     end
 
     def inspect_funs
       @funs.inspect
     end
 
-    def method_missing(name, *args)
-      find_best_method(name, args).call(*args)
+    def define_fun_method(name)
+      self.class.define_method(name) do |*args|
+        fun = find_best_fun(name, args)
+        if fun.nil?
+          method_missing(name, *args)
+        else
+          fun.call(*args)
+        end
+      end
     end
 
     private
-    def find_best_method(name, args)
+    def find_best_fun(name, args)
       @funs[name].detect { |f| f.matches?(args) }
     end
   end

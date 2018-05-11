@@ -32,6 +32,8 @@ module Noaidi
 
     def match_with_lambda(value)
       @pattern.call(value)
+    rescue ArgumentError
+      false
     end
   end
 end
