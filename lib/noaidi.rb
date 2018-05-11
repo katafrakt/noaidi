@@ -10,6 +10,7 @@ module Noaidi
   def self.module(&block)
     Noaidi::Module.new.tap do |mod|
       mod.instance_eval(&block)
+      mod.freeze
     end
   end
 end

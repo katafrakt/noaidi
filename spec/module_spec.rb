@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe Noaidi do
+describe Noaidi::Module do
+  Spy = Class.new
+
   it 'returns correct value' do
     MyModule = Noaidi.module do
       fun :test do
@@ -96,6 +98,24 @@ describe Noaidi do
 
     it 'allows to call' do
       expect(@mod.fib(8)).to eq(21)
+    end
+  end
+
+  context 'private funs' do
+    before do
+      @mod = Noaidi.module do
+        fun(:public_fun) { private_fun }
+        funp(:private_fun) { Spy.call }
+      end
+    end
+
+    it 'allows calling private methods from public ones' do
+      expect(Spy).to receive(:call)
+      @mod.public_fun
+    end
+
+    it 'disallows calling private methods from outside' do
+      expect { @mod.private_fun }.to raise_error(NoMethodError, /private method `private_fun' called/)
     end
   end
 

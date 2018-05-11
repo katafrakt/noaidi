@@ -2,9 +2,11 @@ module Noaidi
   ReturnContractViolation = Class.new(StandardError)
 
   class Fun
+    attr_reader :name, :block, :module
+
     def initialize(noaidi, name, args, block)
       @module = noaidi
-      @name = name
+      @name = name.to_sym
       @args = args.map{|a| Matcher.new(a)}
       @block = block
     end
