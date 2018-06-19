@@ -2,7 +2,7 @@ module Noaidi
   ReturnContractViolation = Class.new(StandardError)
 
   class Fun
-    attr_reader :name, :block, :module
+    attr_reader :name, :block, :module, :visibility
 
     def initialize(noaidi, name, args, block)
       @module = noaidi
@@ -26,6 +26,10 @@ module Noaidi
 
     def method_missing(name, *args)
       @module.public_send(name, *args)
+    end
+
+    def set_visibility!(visibility)
+      @visibility = visibility
     end
 
     private

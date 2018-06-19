@@ -119,6 +119,17 @@ describe Noaidi::Module do
     end
   end
 
+  context 'mixing private and public definition' do
+    it 'raises error' do
+      expect do
+        Noaidi.module do
+          fun(:le_fun, Symbol) { |input| le_fun(input.to_s) }
+          funp(:le_fun, String) { |input| Spy.call(input) }
+        end
+      end.to raise_error(Noaidi::Module::VisibilityMismatchError)
+    end
+  end
+
   context 'any method' do
     before(:all) do
       @mod = Noaidi.module do
